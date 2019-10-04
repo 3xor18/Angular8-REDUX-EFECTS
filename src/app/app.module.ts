@@ -6,6 +6,15 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { HttpClientModule } from '@angular/common/http';
+
+/* Ngrx */
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { appReducers } from './store/app.reducer';
+import { effectsArr } from './store/efects';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -15,8 +24,13 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     SharedModule,
     UsuariosModule,
-    HttpClientModule
-
+    HttpClientModule,
+    StoreModule.forRoot(appReducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
+    EffectsModule.forRoot(effectsArr)
   ],
   providers: [],
   bootstrap: [AppComponent]
